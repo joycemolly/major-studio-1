@@ -1,0 +1,61 @@
+//https://www.youtube.com/watch?v=78aE7L5c55E//
+//upload standard firmata to the arduino board
+
+import processing.video.*;
+
+
+import processing.serial.*;
+import cc.arduino.*;
+Movie[] movies = new Movie [2];
+
+ 
+
+Arduino arduino;
+ 
+
+int ledPin = 13;               
+int switcher = 3; 
+
+void setup() {
+  size(600, 300);
+  smooth();
+  noStroke();
+  ellipseMode(CENTER);
+  println(Arduino.list());
+  frameRate(30);
+for(int i=0; i<2; i++)
+  {
+    movies[i] = new Movie(this, i + ".mp4");
+    movies[i].loop();
+  }
+
+
+
+
+ 
+  arduino = new Arduino(this, Arduino.list()[5], 57600);
+ 
+  arduino.pinMode(ledPin, Arduino.OUTPUT);
+  arduino.pinMode(switcher, Arduino.INPUT); 
+}
+void movieEvent(Movie m)
+{
+  m.read();
+}
+ 
+void draw()
+{
+  int digitalValue = arduino.digitalRead(switcher);
+
+  if (digitalValue == Arduino.LOW) {
+    image(movies[1],0,0);}
+    else{ image(movies[0], 0, 0);
+
+}
+  
+    
+    
+    }
+
+  
+ 
